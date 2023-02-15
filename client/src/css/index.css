@@ -19,9 +19,24 @@
 }
 
 .header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.header-logo {
   height: 100px;
   background: #e6e6e6
     url("https://vsetop.org/templates/vsetop/images/background-noise.png");
+}
+
+.auth-buttons {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.auth-buttons button {
+  margin: 0 5px;
 }
 
 .container {

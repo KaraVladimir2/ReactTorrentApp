@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { AuthContext } from "../Context";
-import PostService from "../API/PostService";
+import PostService from "../API/PostsService";
 import { useFetching } from "../Hooks/useFetching";
 import Loader from "./UI/Loader";
 
 const PostItem = (props) => {
   const router = useHistory();
-  const { isAuth, setIsAuth } = useContext(AuthContext);
   const [titleImageURL, setTitleImageURL] = useState("");
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
     PostService.getTitleImage(id, setTitleImageURL);

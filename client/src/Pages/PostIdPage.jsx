@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetching } from "../Hooks/useFetching";
-import PostService from "../API/PostService";
+import PostService from "../API/PostsService";
 import Loader from "../Components/UI/Loader";
-import HeaderLogo from "../Components/UI/HeaderLogo";
 import Navbar from "../Components/Navbar";
+import Header from "../Components/Header";
 
 const PostIdPage = () => {
   const params = useParams();
@@ -36,7 +36,7 @@ const PostIdPage = () => {
   return (
     <div>
       <div className="App">
-        <HeaderLogo />
+        <Header />
         <div className="container">
           <div className="content">
             <Navbar />

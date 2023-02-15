@@ -7,7 +7,7 @@ import Navbar from "../Components/Navbar";
 import AuthService from "../API/AuthService";
 import { TokenContext } from "../Context";
 
-const Login = () => {
+const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { token, setToken } = useContext(TokenContext);
@@ -20,9 +20,9 @@ const Login = () => {
     }
   };
 
-  const login = (event) => {
+  const register = async (event) => {
     event.preventDefault();
-    AuthService.login(username, password, updateToken);
+    await AuthService.register(username, password, updateToken);
     router.push(`/posts`);
   };
 
@@ -30,8 +30,8 @@ const Login = () => {
     <div>
       <Header />
       <Navbar />
-      <h1>Вход</h1>
-      <form onSubmit={login}>
+      <h1>Регистрация</h1>
+      <form onSubmit={register}>
         <MyInput
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -44,10 +44,10 @@ const Login = () => {
           type="password"
           placeholder="Введите пароль"
         />
-        <MyButton>Войти</MyButton>
+        <MyButton>Зарегистрироваться</MyButton>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Register;

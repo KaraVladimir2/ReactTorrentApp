@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import PostService from "../API/PostService";
+import PostService from "../API/PostsService";
 import { usePosts } from "../Hooks/usePosts";
 import { useFetching } from "../Hooks/useFetching";
 import MyButton from "../Components/UI/MyButton";
@@ -8,9 +8,9 @@ import MyModal from "../Components/MyModal";
 import PostFilter from "../Components/PostFilter";
 import PostList from "../Components/PostList";
 import Pagination from "../Components/Pagination";
-import { AuthContext } from "../Context";
 import Navbar from "../Components/Navbar";
-import HeaderLogo from "../Components/UI/HeaderLogo";
+import Header from "../Components/Header";
+import { TokenContext } from "../Context";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
@@ -21,7 +21,7 @@ function Posts() {
   const [page, setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
   const lastElement = useRef();
-  const { isAuth, isLoading } = useContext(AuthContext);
+  const { isAdmin } = useContext(TokenContext);
 
   const getPageCount = (totalCount, limit) => {
     return Math.ceil(totalCount / limit);
@@ -54,11 +54,11 @@ function Posts() {
 
   return (
     <div className="App">
-      <HeaderLogo />
+      <Header />
       <div className="container">
         <div className="content">
           <Navbar />
-          {isAuth ? (
+          {isAdmin ? (
             <>
               <MyButton
                 style={{ marginTop: 30 }}

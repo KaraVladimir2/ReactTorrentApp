@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function HeaderLogo() {
   return (
-    <div className="header">
+    <div className="header-logo">
       <Link to="/posts">
         <img
           src="https://vsetop.org/templates/vsetop/images/logo3.gif"

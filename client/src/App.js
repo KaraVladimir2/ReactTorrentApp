@@ -1,31 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./Components/AppRouter";
-import { AuthContext } from "./Context/index";
+import { TokenContext } from "./Context/index";
+import AuthService from "./API/AuthService";
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [isAuth, setIsAuth] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (localStorage.getItem("auth")) {
-      setIsAuth(true);
+    async function temp() {
+      localStorage.setItem("token", token);
+      await AuthService.checkRole(token).then((response) =>
+        response.json().then((data) => {
+          setIsAuth(data.isUser);
+          setIsAdmin(data.isAdmin);
+        })
+      );
     }
-    setLoading(false);
-  }, []);
+    temp();
+  }, [token]);
 
   return (
-    <AuthContext.Provider
+    <TokenContext.Provider
       value={{
+        token,
+        setToken,
         isAuth,
         setIsAuth,
+        isAdmin,
+        setIsAdmin,
         isLoading,
       }}
     >
       <BrowserRouter>
         <AppRouter />
       </BrowserRouter>
-    </AuthContext.Provider>
+    </TokenContext.Provider>
   );
 }
 
