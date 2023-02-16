@@ -6,23 +6,38 @@ import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 import AuthService from "../API/AuthService";
 import { TokenContext } from "../Context";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { token, setToken } = useContext(TokenContext);
+  const { token, setToken, setIsAuth } = useContext(TokenContext);
   const router = useHistory();
 
   const updateToken = async (result) => {
     if (result) {
       setToken(result);
+      setIsAuth(true);
       localStorage.setItem("token", result);
     }
   };
 
+  function resultNotify(text) {
+    toast(text, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+
   const login = (event) => {
     event.preventDefault();
-    AuthService.login(username, password, updateToken);
+    AuthService.login(username, password, updateToken, resultNotify);
     router.push(`/posts`);
   };
 

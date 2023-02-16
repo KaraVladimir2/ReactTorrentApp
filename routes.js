@@ -13,12 +13,13 @@ import jwt from "jsonwebtoken";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-const generateAccessToken = (id, roles) => {
+const generateAccessToken = (id, roles, username) => {
   const payload = {
     id,
     roles,
+    username,
   };
-  return jwt.sign(payload, config.secret, { expiresIn: "2h" });
+  return jwt.sign(payload, config.secret, { expiresIn: "1h" });
 };
 
 router.post("/postSend", cors(), upload.array("myImage"), async (req, res) => {
@@ -63,6 +64,19 @@ router.post("/postSend", cors(), upload.array("myImage"), async (req, res) => {
     await postToAdd.save();
     res.json({ success: true, message: "Post has been saved" });
   } catch (error) {
+    res.json({ success: false, message: "Something went wrong" });
+  }
+});
+
+router.post("/postComment", cors(), async (req, res) => {
+  try {
+    const { text, username, id } = req.body;
+    const post = postModel.findOne({ _id: id });
+    const comment = { text, owner: username };
+    await post.updateOne({}, { $push: { comments: comment } });
+    res.json({ success: true, message: "Comment has been sent" });
+  } catch (error) {
+    console.log(error.message);
     res.json({ success: false, message: "Something went wrong" });
   }
 });
@@ -161,7 +175,11 @@ router.post(
       });
       await user.save();
       const createdUser = await User.findOne({ username });
-      const token = generateAccessToken(createdUser._id, createdUser.roles);
+      const token = generateAccessToken(
+        createdUser._id,
+        createdUser.roles,
+        createdUser.username
+      );
       return res.json({
         token,
         message: "Пользователь успешно зарегистрирован",
@@ -192,7 +210,7 @@ router.post("/login", cors(), async (req, res) => {
         .status(400)
         .json({ isSuccessful: false, message: `Введен неверный пароль` });
     }
-    const token = generateAccessToken(user._id, user.roles);
+    const token = generateAccessToken(user._id, user.roles, user.username);
     return res.json({
       token,
       message: "Вход успешно выполнен!",
@@ -204,18 +222,25 @@ router.post("/login", cors(), async (req, res) => {
   }
 });
 
-router.get("/getRole", cors(), async (req, res) => {
+router.get("/getUserInfo", cors(), async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   let isUser = false;
   let isAdmin = false;
   if (token) {
-    const { roles: userRoles } = jwt.verify(token, config.secret);
-    userRoles.forEach((role) => {
-      if (role === "USER" || role === "ADMIN") isUser = true;
-      if (role === "ADMIN") isAdmin = true;
-    });
+    try {
+      const { roles: userRoles, username: username } = jwt.verify(
+        token,
+        config.secret
+      );
+      userRoles.forEach((role) => {
+        if (role === "USER" || role === "ADMIN") isUser = true;
+        if (role === "ADMIN") isAdmin = true;
+      });
+      return res.json({ isUser, isAdmin, username });
+    } catch (error) {
+      return res.json({ message: error.message });
+    }
   }
-  return res.json({ isUser, isAdmin });
 });
 
 export default router;

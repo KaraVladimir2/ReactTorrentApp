@@ -40,10 +40,20 @@ const schema = new Schema({
     type: String,
     required: false,
   },
-  comments: {
-    type: Array,
-    required: false,
-  },
+  comments: [
+    {
+      text: {
+        type: String,
+      },
+      date: {
+        type: Date,
+        default: Date.now(),
+      },
+      owner: {
+        type: String,
+      },
+    },
+  ],
   titleImage: {
     Buffer: {
       type: Buffer,

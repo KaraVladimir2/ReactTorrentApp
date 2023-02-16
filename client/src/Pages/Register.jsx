@@ -6,6 +6,7 @@ import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 import AuthService from "../API/AuthService";
 import { TokenContext } from "../Context";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -20,9 +21,22 @@ const Register = () => {
     }
   };
 
+  function resultNotify(text) {
+    toast(text, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+
   const register = async (event) => {
     event.preventDefault();
-    await AuthService.register(username, password, updateToken);
+    await AuthService.register(username, password, updateToken, resultNotify);
     router.push(`/posts`);
   };
 

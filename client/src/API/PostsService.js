@@ -50,6 +50,17 @@ export default class PostService {
       });
   }
 
+  static async postComment(text, username, id) {
+    await fetch("http://localhost:5000/postComment", {
+      ...options,
+      body: JSON.stringify({ text, username, id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return alert(data.message);
+      });
+  }
+
   static async getTitleImage(id, setImage) {
     await fetch("http://localhost:5000/getTitleImage?id=" + id, {
       method: "GET",

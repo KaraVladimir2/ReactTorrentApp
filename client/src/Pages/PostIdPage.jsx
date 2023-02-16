@@ -1,25 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetching } from "../Hooks/useFetching";
 import PostService from "../API/PostsService";
 import Loader from "../Components/UI/Loader";
 import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
+import Comment from "../Components/Comment";
+import { TokenContext } from "../Context";
+import MyInput from "../Components/UI/MyInput";
+import MyButton from "../Components/UI/MyButton";
 
 const PostIdPage = () => {
   const params = useParams();
+  const { isAuth, username } = useContext(TokenContext);
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [titleImageURL, setTitleImageURL] = useState("");
   const [screenshotsURL, setScreenshotsURL] = useState([]);
   const [torrentFileURL, setTorrentFileURL] = useState("");
+  const [userComment, setUserComment] = useState("");
 
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
     setPost(await PostService.getById(id));
     PostService.getTitleImage(id, setTitleImageURL);
     PostService.getScreenshots(id, setScreenshotsURL);
     PostService.getTorrentFile(id, setTorrentFileURL);
-    //setComments(...post.comments);
+    setComments(post.comments);
   });
 
   const downloadFile = () => {
@@ -27,6 +33,11 @@ const PostIdPage = () => {
     element.href = torrentFileURL;
     element.download = post.title + ".torrent";
     element.click();
+  };
+
+  const postComment = async () => {
+    PostService.postComment(userComment, username, post._id);
+    setUserComment("");
   };
 
   useEffect(() => {
@@ -114,6 +125,24 @@ const PostIdPage = () => {
                   >
                     <span>Скачать</span>
                   </button>
+                </div>
+                {isAuth && (
+                  <div className="write-comment">
+                    <p>Оставить комментарий</p>
+                    <MyInput
+                      value={userComment}
+                      onChange={(e) => setUserComment(e.target.value)}
+                      type="text"
+                      placeholder="Комментарий"
+                    />
+                    <MyButton onClick={postComment}>Отправить</MyButton>
+                  </div>
+                )}
+
+                <div className="comments">
+                  {post.comments.map((comm, index) => {
+                    return <Comment comment={comm} key={index} />;
+                  })}
                 </div>
               </div>
             )}

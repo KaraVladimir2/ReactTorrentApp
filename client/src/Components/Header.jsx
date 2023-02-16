@@ -5,12 +5,13 @@ import HeaderLogo from "./UI/HeaderLogo";
 import MyButton from "./UI/MyButton";
 
 function Header() {
-  const { setToken, isAuth } = useContext(TokenContext);
+  const { setToken, isAuth, setIsAuth } = useContext(TokenContext);
 
   const router = useHistory();
 
   const logout = () => {
     setToken("");
+    setIsAuth(false);
     localStorage.removeItem("token");
     router.push(`/posts`);
   };
