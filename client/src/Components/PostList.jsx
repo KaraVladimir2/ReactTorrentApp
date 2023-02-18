@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PostItem from "./PostItem";
 import Loader from "./UI/Loader";
 
@@ -9,7 +9,7 @@ const PostList = ({ posts, remove }) => {
 
   return (
     <div>
-      {posts.reverse().map((post, index) => (
+      {posts.map((post, index) => (
         <PostItem
           key={post._id}
           remove={remove}

@@ -126,7 +126,6 @@ const PostIdPage = () => {
                   </button>
                 </div>
                 <Comment
-                  comments={post.comments.reverse()}
                   username={username}
                   id={post._id}
                   post={post}

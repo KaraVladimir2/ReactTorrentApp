@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import MyInput from "../Components/UI/MyInput";
 import MyButton from "../Components/UI/MyButton";
 import PostService from "../API/PostsService";

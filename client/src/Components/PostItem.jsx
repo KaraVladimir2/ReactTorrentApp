@@ -35,9 +35,7 @@ const PostItem = (props) => {
               </div>
               <div className="post-title-down">
                 <p className="postfooter">
-                  {props.post.postDate} | автор:
-                  <a href="https://vsetop.org/user/pyau/">pyau</a> | Просмотров:
-                  468
+                  {props.post.postDate} | Просмотров: 468
                 </p>
                 <div className="category">
                   <a href="https://vsetop.org/games/">

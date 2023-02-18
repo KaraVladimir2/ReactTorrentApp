@@ -64,7 +64,8 @@
   color: white;
 }
 
-.naviga a {
+.naviga a,
+.naviga div {
   width: 25%;
   color: black;
 }
@@ -332,6 +333,7 @@
 }
 
 .myModalContent {
+  width: 90%;
   padding: 25px;
   background: white;
   border-radius: 16px;

@@ -16,7 +16,7 @@ export default class PostService {
     })
       .then((response) => response.json())
       .then((data) => {
-        return data.data;
+        return data.data.reverse();
       });
   }
 
