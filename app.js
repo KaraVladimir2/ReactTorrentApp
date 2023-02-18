@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
-import routes from "./routes.js";
+import authRoutes from "./routes/authRoutes.js";
+import postsRoutes from "./routes/postsRoutes.js";
+import usersRoutes from "./routes/usersRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
@@ -14,9 +16,14 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(routes);
+app.use("/auth", authRoutes);
+app.use("/posts", postsRoutes);
+app.use("/users", usersRoutes);
 app.use(express.static(__dirname));
-routes.use(cors());
+postsRoutes.use(cors());
+usersRoutes.use(cors());
+authRoutes.use(cors());
+
 mongoose.set("strictQuery", false);
 
 async function start() {

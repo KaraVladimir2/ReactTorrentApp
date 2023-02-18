@@ -77,6 +77,7 @@ function Posts() {
           {postError && <h1>Произошла ошибка ${postError}</h1>}
           <PostList remove={removePost} posts={sortedAndSearchedPosts} />
           <Pagination
+            postsLen={posts.length}
             page={page}
             changePage={changePage}
             totalPages={totalPages}

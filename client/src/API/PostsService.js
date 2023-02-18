@@ -10,7 +10,7 @@ const options = {
 
 export default class PostService {
   static async getAll(page, limit) {
-    return await fetch("http://localhost:5000/getPosts", {
+    return await fetch("http://localhost:5000/posts/getPosts", {
       ...options,
       body: JSON.stringify({ page, limit }),
     })
@@ -21,7 +21,7 @@ export default class PostService {
   }
 
   static async getById(id) {
-    return await fetch("http://localhost:5000/getPostById", {
+    return await fetch("http://localhost:5000/posts/getPostById", {
       ...options,
       body: JSON.stringify({ id }),
     })
@@ -40,7 +40,7 @@ export default class PostService {
     });
     formData.append("myImage", newPost.torrentFile);
 
-    await fetch("http://localhost:5000/postSend", {
+    await fetch("http://localhost:5000/posts/postSend", {
       method: "POST",
       body: formData,
     })
@@ -51,7 +51,7 @@ export default class PostService {
   }
 
   static async deletePost(id) {
-    await fetch("http://localhost:5000/deletePost", {
+    await fetch("http://localhost:5000/posts/deletePost", {
       ...options,
       body: JSON.stringify({ id }),
     })
@@ -62,7 +62,7 @@ export default class PostService {
   }
 
   static async postComment(text, username, id) {
-    await fetch("http://localhost:5000/postComment", {
+    await fetch("http://localhost:5000/posts/postComment", {
       ...options,
       body: JSON.stringify({ text, username, id }),
     })

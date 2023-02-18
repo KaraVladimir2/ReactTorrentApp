@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./Components/AppRouter";
 import { TokenContext } from "./Context/index";
-import AuthService from "./API/AuthService";
+import UsersService from "./API/UsersService";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Notify from "./utils/Toaster";
@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     async function temp() {
       localStorage.setItem("token", token);
-      await AuthService.getUserInfo(token).then((response) =>
+      await UsersService.getUserInfo(token).then((response) =>
         response.json().then((data) => {
           if (data.message) {
             setToken("");

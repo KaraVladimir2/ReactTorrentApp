@@ -1,6 +1,6 @@
 import React from "react";
 
-const Pagination = ({ totalPages, page, changePage }) => {
+const Pagination = ({ postsLen, totalPages, page, changePage }) => {
   const getPagesArray = (totalPages) => {
     let result = [];
     for (let i = 0; i < totalPages; i++) {
@@ -10,6 +10,10 @@ const Pagination = ({ totalPages, page, changePage }) => {
   };
 
   let pagesArray = getPagesArray(totalPages);
+
+  if (!postsLen) {
+    return;
+  }
   return (
     <div className="page-wrapper">
       {pagesArray.map((p) => (

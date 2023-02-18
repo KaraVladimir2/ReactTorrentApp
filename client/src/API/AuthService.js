@@ -8,7 +8,7 @@ const options = {
 
 export default class PostService {
   static async register(username, password, setToken, notify) {
-    await fetch("http://localhost:5000/register", {
+    await fetch("http://localhost:5000/auth/register", {
       ...options,
       body: JSON.stringify({ username, password }),
     })
@@ -20,7 +20,7 @@ export default class PostService {
   }
 
   static async login(username, password, setToken, notify) {
-    await fetch("http://localhost:5000/login", {
+    await fetch("http://localhost:5000/auth/login", {
       ...options,
       body: JSON.stringify({ username, password }),
     })
@@ -32,7 +32,7 @@ export default class PostService {
   }
 
   static async getUserInfo(token) {
-    return await fetch("http://localhost:5000/getUserInfo", {
+    return await fetch("http://localhost:5000/auth/getUserInfo", {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
