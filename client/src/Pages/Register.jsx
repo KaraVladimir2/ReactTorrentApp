@@ -6,7 +6,6 @@ import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 import AuthService from "../API/AuthService";
 import { TokenContext } from "../Context";
-import Notify from "../utils/Toaster";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -23,7 +22,7 @@ const Register = () => {
 
   const register = async (event) => {
     event.preventDefault();
-    await AuthService.register(username, password, updateToken, Notify);
+    await AuthService.register(username, password, updateToken);
     router.push(`/posts`);
   };
 

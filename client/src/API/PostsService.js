@@ -1,4 +1,4 @@
-import { Buffer } from "buffer";
+import Notify from "../utils/Toaster";
 
 const options = {
   method: "POST",
@@ -46,29 +46,29 @@ export default class PostService {
     })
       .then((response) => response.json())
       .then((data) => {
-        return alert(data.message);
+        return Notify(data.message);
       });
   }
 
-  static async deletePost(id, notify) {
+  static async deletePost(id) {
     await fetch("http://localhost:5000/deletePost", {
       ...options,
       body: JSON.stringify({ id }),
     })
       .then((response) => response.json())
       .then((data) => {
-        notify(data.message);
+        Notify(data.message);
       });
   }
 
-  static async postComment(text, username, id, notify) {
+  static async postComment(text, username, id) {
     await fetch("http://localhost:5000/postComment", {
       ...options,
       body: JSON.stringify({ text, username, id }),
     })
       .then((response) => response.json())
       .then((data) => {
-        notify(data.message);
+        Notify(data.message);
       });
   }
 }

@@ -7,7 +7,6 @@ import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
 import Comment from "../Components/Comment";
 import { TokenContext } from "../Context";
-import Notify from "../utils/Toaster";
 import createFileUrl from "../utils/createFileUrl";
 
 const PostIdPage = () => {
@@ -17,6 +16,7 @@ const PostIdPage = () => {
   const [titleImageURL, setTitleImageURL] = useState("");
   const [screenshotsURL, setScreenshotsURL] = useState([]);
   const [torrentFileURL, setTorrentFileURL] = useState("");
+  const [userComment, setUserComment] = useState("");
   const router = useHistory();
 
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
@@ -31,7 +31,7 @@ const PostIdPage = () => {
   };
 
   const deletePost = () => {
-    PostService.deletePost(post._id, Notify);
+    PostService.deletePost(post._id);
     router.push(`/posts`);
   };
 
@@ -131,6 +131,8 @@ const PostIdPage = () => {
                   id={post._id}
                   post={post}
                   setPost={setPost}
+                  userComment={userComment}
+                  setUserComment={setUserComment}
                 />
               </div>
             )}

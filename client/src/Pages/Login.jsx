@@ -6,7 +6,6 @@ import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 import AuthService from "../API/AuthService";
 import { TokenContext } from "../Context";
-import Notify from "../utils/Toaster";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -24,7 +23,7 @@ const Login = () => {
 
   const login = (event) => {
     event.preventDefault();
-    AuthService.login(username, password, updateToken, Notify);
+    AuthService.login(username, password, updateToken);
     router.push(`/posts`);
   };
 

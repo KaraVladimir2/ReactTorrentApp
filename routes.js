@@ -5,12 +5,10 @@ import userModel from "./Models/userModel.js";
 import roleModel from "./Models/roleModel.js";
 import cors from "cors";
 import multer from "multer";
-import url from "url";
 import config from "./config.js";
 import { check, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import bodyParser from "body-parser";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -225,6 +223,7 @@ router.get("/getUserInfo", cors(), async (req, res) => {
       return res.json({ message: error.message });
     }
   }
+  return res.json({ isUser, isAdmin, username });
 });
 
 export default router;

@@ -1,17 +1,23 @@
-import React, { useContext, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import MyInput from "../Components/UI/MyInput";
 import MyButton from "../Components/UI/MyButton";
-import Notify from "../utils/Toaster";
 import PostService from "../API/PostsService";
 import { TokenContext } from "../Context";
 import CommentsList from "./CommentsList";
 
-const Comment = ({ username, id, post, setPost }) => {
-  const [userComment, setUserComment] = useState("");
+const Comment = ({
+  username,
+  id,
+  post,
+  setPost,
+  userComment,
+  setUserComment,
+}) => {
   const { isAuth } = useContext(TokenContext);
+  let reverseComments = post.comments.reverse();
 
   const postComment = async () => {
-    await PostService.postComment(userComment, username, id, Notify);
+    await PostService.postComment(userComment, username, id);
     setUserComment("");
     const updatedPost = await PostService.getById(post._id);
     setPost({
@@ -19,6 +25,10 @@ const Comment = ({ username, id, post, setPost }) => {
       comments: updatedPost.comments,
     });
   };
+
+  useEffect(() => {
+    reverseComments.reverse();
+  }, []);
 
   return (
     <div className="comments">
@@ -34,7 +44,7 @@ const Comment = ({ username, id, post, setPost }) => {
           <MyButton onClick={postComment}>Отправить</MyButton>
         </div>
       )}
-      <CommentsList comments={post.comments} />
+      <CommentsList comments={reverseComments} />
     </div>
   );
 };
