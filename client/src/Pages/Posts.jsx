@@ -29,7 +29,7 @@ function Posts() {
 
   const [fetchPosts, isPostsLoading, postError] = useFetching(
     async (limit, page) => {
-      const response = await PostService.getAll(page);
+      const response = await PostService.getAll(page, limit);
       setPosts([...response]);
     }
   );

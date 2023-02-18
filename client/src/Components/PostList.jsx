@@ -9,7 +9,7 @@ const PostList = ({ posts, remove }) => {
 
   return (
     <div>
-      {posts.map((post, index) => (
+      {posts.reverse().map((post, index) => (
         <PostItem
           key={post._id}
           remove={remove}

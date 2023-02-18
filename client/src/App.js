@@ -5,6 +5,7 @@ import { TokenContext } from "./Context/index";
 import AuthService from "./API/AuthService";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Notify from "./utils/Toaster";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -21,7 +22,7 @@ function App() {
           if (data.message) {
             setToken("");
             localStorage.removeItem("token");
-            return alert("Токен авторизация истек, авторизуйтесь заново!");
+            return Notify("Токен авторизация истек, авторизуйтесь заново!");
           }
           setIsAuth(data.isUser);
           setIsAdmin(data.isAdmin);

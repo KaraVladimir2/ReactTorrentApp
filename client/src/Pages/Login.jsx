@@ -6,7 +6,7 @@ import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 import AuthService from "../API/AuthService";
 import { TokenContext } from "../Context";
-import { toast } from "react-toastify";
+import Notify from "../utils/Toaster";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -22,22 +22,9 @@ const Login = () => {
     }
   };
 
-  function resultNotify(text) {
-    toast(text, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  }
-
   const login = (event) => {
     event.preventDefault();
-    AuthService.login(username, password, updateToken, resultNotify);
+    AuthService.login(username, password, updateToken, Notify);
     router.push(`/posts`);
   };
 

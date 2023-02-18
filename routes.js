@@ -10,6 +10,7 @@ import config from "./config.js";
 import { check, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import bodyParser from "body-parser";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -64,6 +65,18 @@ router.post("/postSend", cors(), upload.array("myImage"), async (req, res) => {
     await postToAdd.save();
     res.json({ success: true, message: "Post has been saved" });
   } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: "Something went wrong" });
+  }
+});
+
+router.post("/deletePost", cors(), async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    await postModel.deleteOne({ _id: id });
+    res.json({ success: true, message: "Post has been deleted" });
+  } catch (error) {
     res.json({ success: false, message: "Something went wrong" });
   }
 });
@@ -82,11 +95,11 @@ router.post("/postComment", cors(), async (req, res) => {
 });
 
 router.post("/getPosts", cors(), async (req, res) => {
-  const { page } = req.body;
+  const { page, limit } = req.body;
   try {
     await postModel
       .find()
-      .skip((page - 1) * 10)
+      .skip((page - 1) * limit)
       .limit(10)
       .exec(function (err, data) {
         res.json({ success: true, data: data });
@@ -114,8 +127,12 @@ router.get("/getTitleImage", cors(), async (req, res) => {
   const params = new url.URLSearchParams(parsedUrl.search);
   const id = params.get("id");
   const result = await postModel.findOne({ _id: id });
-  res.setHeader("content-type", result.titleImage.ContentType);
-  res.send(result.titleImage.Buffer);
+  try {
+    res.setHeader("content-type", result.titleImage.ContentType);
+    res.send(result.titleImage.Buffer);
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 router.get("/getScreenshots", cors(), async (req, res) => {
@@ -124,9 +141,13 @@ router.get("/getScreenshots", cors(), async (req, res) => {
   const id = params.get("id");
   const post = await postModel.findOne({ _id: id });
   const result = [];
-  post.screenshots.map((x) => result.push(x.Buffer));
-  res.setHeader("content-type", post.screenshots[0].ContentType);
-  res.send(result);
+  try {
+    post.screenshots.map((screenshot) => result.push(screenshot.Buffer));
+    res.setHeader("content-type", post.screenshots[0].ContentType);
+    res.send(result);
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 router.get("/getTorrentFile", cors(), async (req, res) => {
@@ -134,8 +155,13 @@ router.get("/getTorrentFile", cors(), async (req, res) => {
   const params = new url.URLSearchParams(parsedUrl.search);
   const id = params.get("id");
   const result = await postModel.findOne({ _id: id });
-  res.setHeader("content-type", result.torrentFile.ContentType);
-  res.send(result.torrentFile.Buffer);
+
+  try {
+    res.setHeader("content-type", result.torrentFile.ContentType);
+    res.send(result.torrentFile.Buffer);
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 router.post(

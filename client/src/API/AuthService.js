@@ -32,13 +32,12 @@ export default class PostService {
   }
 
   static async getUserInfo(token) {
-    const data = await fetch("http://localhost:5000/getUserInfo", {
+    return await fetch("http://localhost:5000/getUserInfo", {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
       method: "GET",
     });
-    return data;
   }
 }

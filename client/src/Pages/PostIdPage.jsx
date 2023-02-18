@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useFetching } from "../Hooks/useFetching";
 import PostService from "../API/PostsService";
 import Loader from "../Components/UI/Loader";
@@ -7,25 +7,22 @@ import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
 import Comment from "../Components/Comment";
 import { TokenContext } from "../Context";
-import MyInput from "../Components/UI/MyInput";
-import MyButton from "../Components/UI/MyButton";
+import Notify from "../utils/Toaster";
 
 const PostIdPage = () => {
   const params = useParams();
-  const { isAuth, username } = useContext(TokenContext);
+  const { isAdmin, username } = useContext(TokenContext);
   const [post, setPost] = useState({});
-  const [comments, setComments] = useState([]);
   const [titleImageURL, setTitleImageURL] = useState("");
   const [screenshotsURL, setScreenshotsURL] = useState([]);
   const [torrentFileURL, setTorrentFileURL] = useState("");
-  const [userComment, setUserComment] = useState("");
+  const router = useHistory();
 
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
     setPost(await PostService.getById(id));
-    PostService.getTitleImage(id, setTitleImageURL);
-    PostService.getScreenshots(id, setScreenshotsURL);
-    PostService.getTorrentFile(id, setTorrentFileURL);
-    setComments(post.comments);
+    await PostService.getTitleImage(id, setTitleImageURL);
+    await PostService.getScreenshots(id, setScreenshotsURL);
+    await PostService.getTorrentFile(id, setTorrentFileURL);
   });
 
   const downloadFile = () => {
@@ -35,9 +32,9 @@ const PostIdPage = () => {
     element.click();
   };
 
-  const postComment = async () => {
-    PostService.postComment(userComment, username, post._id);
-    setUserComment("");
+  const deletePost = () => {
+    PostService.deletePost(post._id, Notify);
+    router.push(`/posts`);
   };
 
   useEffect(() => {
@@ -67,10 +64,16 @@ const PostIdPage = () => {
                     </div>
                     <div className="post-title-down">
                       <p className="postfooter">
-                        {post.postDate} | автор:
-                        <a href="https://vsetop.org/user/pyau/">pyau</a> |
-                        Просмотров: 468
+                        {post.postDate} | Просмотров: 468
                       </p>
+                      {isAdmin && (
+                        <button
+                          className="delete-button myBtn"
+                          onClick={deletePost}
+                        >
+                          Удалить
+                        </button>
+                      )}
                       <div className="category">
                         <a href="https://vsetop.org/games/">
                           {post.genre.split(", ")[0]}
@@ -78,30 +81,20 @@ const PostIdPage = () => {
                       </div>
                     </div>
                   </div>
-                  <img className="post-image" src={titleImageURL} alt="img" />
+                  <img className="post-image" src={titleImageURL} alt="title" />
                   <p className="post-build">{post._id}</p>
                   <p>{post.description}</p>
                   <div className="screenshots">
-                    <img
-                      className="screenshot"
-                      src={screenshotsURL[0]}
-                      alt="kek"
-                    />
-                    <img
-                      className="screenshot"
-                      src={screenshotsURL[1]}
-                      alt="kek"
-                    />
-                    <img
-                      className="screenshot"
-                      src={screenshotsURL[2]}
-                      alt="kek"
-                    />
-                    <img
-                      className="screenshot"
-                      src={screenshotsURL[3]}
-                      alt="kek"
-                    />
+                    {screenshotsURL.map((screenshot) => {
+                      return (
+                        <img
+                          key={screenshot}
+                          className="screenshot"
+                          src={screenshot}
+                          alt="screenshot"
+                        />
+                      );
+                    })}
                   </div>
                   <p className="margin-top">
                     <b>Системные требования:</b>
@@ -126,24 +119,13 @@ const PostIdPage = () => {
                     <span>Скачать</span>
                   </button>
                 </div>
-                {isAuth && (
-                  <div className="write-comment">
-                    <p>Оставить комментарий</p>
-                    <MyInput
-                      value={userComment}
-                      onChange={(e) => setUserComment(e.target.value)}
-                      type="text"
-                      placeholder="Комментарий"
-                    />
-                    <MyButton onClick={postComment}>Отправить</MyButton>
-                  </div>
-                )}
-
-                <div className="comments">
-                  {post.comments.map((comm, index) => {
-                    return <Comment comment={comm} key={index} />;
-                  })}
-                </div>
+                <Comment
+                  comments={post.comments.reverse()}
+                  username={username}
+                  id={post._id}
+                  post={post}
+                  setPost={setPost}
+                />
               </div>
             )}
           </div>

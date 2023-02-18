@@ -47,7 +47,7 @@ const schema = new Schema({
       },
       date: {
         type: Date,
-        default: Date.now(),
+        default: () => new Date(),
       },
       owner: {
         type: String,

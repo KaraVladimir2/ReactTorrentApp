@@ -8,7 +8,7 @@ const PostItem = (props) => {
   const router = useHistory();
   const [titleImageURL, setTitleImageURL] = useState("");
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
-    PostService.getTitleImage(id, setTitleImageURL);
+    await PostService.getTitleImage(id, setTitleImageURL);
   });
 
   useEffect(() => {

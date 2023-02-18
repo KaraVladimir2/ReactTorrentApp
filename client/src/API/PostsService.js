@@ -9,10 +9,10 @@ const options = {
 };
 
 export default class PostService {
-  static async getAll(page = 1) {
+  static async getAll(page, limit) {
     return await fetch("http://localhost:5000/getPosts", {
       ...options,
-      body: JSON.stringify({ page }),
+      body: JSON.stringify({ page, limit }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -50,14 +50,25 @@ export default class PostService {
       });
   }
 
-  static async postComment(text, username, id) {
+  static async deletePost(id, notify) {
+    await fetch("http://localhost:5000/deletePost", {
+      ...options,
+      body: JSON.stringify({ id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        notify(data.message);
+      });
+  }
+
+  static async postComment(text, username, id, notify) {
     await fetch("http://localhost:5000/postComment", {
       ...options,
       body: JSON.stringify({ text, username, id }),
     })
       .then((response) => response.json())
       .then((data) => {
-        return alert(data.message);
+        notify(data.message);
       });
   }
 
@@ -83,7 +94,7 @@ export default class PostService {
         const objectURL = [];
         buffers.map((buffer) => {
           const blob = new Blob([buffer]);
-          objectURL.push(URL.createObjectURL(blob));
+          return objectURL.push(URL.createObjectURL(blob));
         });
         setScreenshots(objectURL);
       });

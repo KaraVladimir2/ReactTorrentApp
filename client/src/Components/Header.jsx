@@ -13,7 +13,7 @@ function Header() {
     setToken("");
     setIsAuth(false);
     localStorage.removeItem("token");
-    router.push(`/posts`);
+    router.go(0);
   };
 
   return (
