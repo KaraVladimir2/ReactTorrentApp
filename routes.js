@@ -122,48 +122,6 @@ router.post("/getPostById", cors(), async (req, res) => {
   }
 });
 
-router.get("/getTitleImage", cors(), async (req, res) => {
-  const parsedUrl = url.parse(req.url);
-  const params = new url.URLSearchParams(parsedUrl.search);
-  const id = params.get("id");
-  const result = await postModel.findOne({ _id: id });
-  try {
-    res.setHeader("content-type", result.titleImage.ContentType);
-    res.send(result.titleImage.Buffer);
-  } catch (error) {
-    console.log(error.message);
-  }
-});
-
-router.get("/getScreenshots", cors(), async (req, res) => {
-  const parsedUrl = url.parse(req.url);
-  const params = new url.URLSearchParams(parsedUrl.search);
-  const id = params.get("id");
-  const post = await postModel.findOne({ _id: id });
-  const result = [];
-  try {
-    post.screenshots.map((screenshot) => result.push(screenshot.Buffer));
-    res.setHeader("content-type", post.screenshots[0].ContentType);
-    res.send(result);
-  } catch (error) {
-    console.log(error.message);
-  }
-});
-
-router.get("/getTorrentFile", cors(), async (req, res) => {
-  const parsedUrl = url.parse(req.url);
-  const params = new url.URLSearchParams(parsedUrl.search);
-  const id = params.get("id");
-  const result = await postModel.findOne({ _id: id });
-
-  try {
-    res.setHeader("content-type", result.torrentFile.ContentType);
-    res.send(result.torrentFile.Buffer);
-  } catch (error) {
-    console.log(error.message);
-  }
-});
-
 router.post(
   "/register",
   [

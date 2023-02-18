@@ -8,11 +8,12 @@ import Header from "../Components/Header";
 import Comment from "../Components/Comment";
 import { TokenContext } from "../Context";
 import Notify from "../utils/Toaster";
+import createFileUrl from "../utils/createFileUrl";
 
 const PostIdPage = () => {
   const params = useParams();
   const { isAdmin, username } = useContext(TokenContext);
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState(null);
   const [titleImageURL, setTitleImageURL] = useState("");
   const [screenshotsURL, setScreenshotsURL] = useState([]);
   const [torrentFileURL, setTorrentFileURL] = useState("");
@@ -20,9 +21,6 @@ const PostIdPage = () => {
 
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
     setPost(await PostService.getById(id));
-    await PostService.getTitleImage(id, setTitleImageURL);
-    await PostService.getScreenshots(id, setScreenshotsURL);
-    await PostService.getTorrentFile(id, setTorrentFileURL);
   });
 
   const downloadFile = () => {
@@ -40,6 +38,14 @@ const PostIdPage = () => {
   useEffect(() => {
     fetchPostById(params.id);
   }, []);
+
+  useEffect(() => {
+    if (post) {
+      createFileUrl(post.titleImage, setTitleImageURL);
+      createFileUrl(post.screenshots, setScreenshotsURL);
+      createFileUrl(post.torrentFile, setTorrentFileURL);
+    }
+  }, [post]);
 
   return (
     <div>

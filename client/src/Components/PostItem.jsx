@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import PostService from "../API/PostsService";
 import { useFetching } from "../Hooks/useFetching";
 import Loader from "./UI/Loader";
+import createFileUrl from "../utils/createFileUrl";
 
 const PostItem = (props) => {
   const router = useHistory();
   const [titleImageURL, setTitleImageURL] = useState("");
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
-    await PostService.getTitleImage(id, setTitleImageURL);
+    createFileUrl(props.post.titleImage, setTitleImageURL);
   });
 
   useEffect(() => {

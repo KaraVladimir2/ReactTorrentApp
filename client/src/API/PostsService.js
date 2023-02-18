@@ -71,44 +71,4 @@ export default class PostService {
         notify(data.message);
       });
   }
-
-  static async getTitleImage(id, setImage) {
-    await fetch("http://localhost:5000/getTitleImage?id=" + id, {
-      method: "GET",
-    })
-      .then((response) => response.arrayBuffer())
-      .then((data) => {
-        const blob = new Blob([data]);
-        const objectURL = URL.createObjectURL(blob);
-        setImage(objectURL);
-      });
-  }
-
-  static async getScreenshots(id, setScreenshots) {
-    await fetch("http://localhost:5000/getScreenshots?id=" + id, {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const buffers = data.map((buf) => Buffer.from(buf.data));
-        const objectURL = [];
-        buffers.map((buffer) => {
-          const blob = new Blob([buffer]);
-          return objectURL.push(URL.createObjectURL(blob));
-        });
-        setScreenshots(objectURL);
-      });
-  }
-
-  static async getTorrentFile(id, setFile) {
-    await fetch("http://localhost:5000/getTorrentFile?id=" + id, {
-      method: "GET",
-    })
-      .then((response) => response.arrayBuffer())
-      .then((data) => {
-        const blob = new Blob([data]);
-        const objectURL = URL.createObjectURL(blob);
-        setFile(objectURL);
-      });
-  }
 }
