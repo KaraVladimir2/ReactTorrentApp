@@ -6,10 +6,14 @@ import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 import AuthService from "../API/AuthService";
 import { TokenContext } from "../Context";
+import ReCAPTCHA from "react-google-recaptcha";
+import Notify from "../utils/Toaster";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [checkPassword, setCheckPassword] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
   const { token, setToken } = useContext(TokenContext);
   const router = useHistory();
 
@@ -22,9 +26,20 @@ const Register = () => {
 
   const register = async (event) => {
     event.preventDefault();
-    await AuthService.register(username, password, updateToken);
-    router.push(`/posts`);
+    if (password !== checkPassword) Notify("Пароли не совпадают");
+    isVerified
+      ? await AuthService.register(username, password, updateToken)
+      : Notify("Пройдите captcha");
+    router.push(`/register`);
   };
+
+  function handleCaptchaChange(value) {
+    if (value) {
+      setIsVerified(true);
+    } else {
+      setIsVerified(false);
+    }
+  }
 
   return (
     <div>
@@ -43,6 +58,16 @@ const Register = () => {
           onChange={(e) => setPassword(e.target.value)}
           type="password"
           placeholder="Введите пароль"
+        />
+        <MyInput
+          value={checkPassword}
+          onChange={(e) => setCheckPassword(e.target.value)}
+          type="password"
+          placeholder="Введите пароль повторно"
+        />
+        <ReCAPTCHA
+          sitekey="6LcPJJckAAAAABUgLItYOyoUIdqfdn2JK-t3T_qj"
+          onChange={handleCaptchaChange}
         />
         <MyButton>Зарегистрироваться</MyButton>
       </form>

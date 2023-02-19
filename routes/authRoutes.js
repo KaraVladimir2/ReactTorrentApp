@@ -3,9 +3,10 @@ const authRouter = Router();
 import { check, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import config from "../config.js";
+import cors from "cors";
 import userModel from "../Models/userModel.js";
 import roleModel from "../Models/roleModel.js";
-import cors from "cors";
 
 const generateAccessToken = (id, roles, username) => {
   const payload = {
@@ -52,7 +53,7 @@ authRouter.post(
         roles: [userRole.value],
       });
       await user.save();
-      const createdUser = await User.findOne({ username });
+      const createdUser = await userModel.findOne({ username });
       const token = generateAccessToken(
         createdUser._id,
         createdUser.roles,

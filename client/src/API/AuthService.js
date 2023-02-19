@@ -1,3 +1,5 @@
+import Notify from "../utils/Toaster";
+
 const options = {
   method: "POST",
   headers: {
@@ -14,7 +16,7 @@ export default class PostService {
     })
       .then((response) => response.json())
       .then((data) => {
-        notify(data.message);
+        Notify(data.message);
         setToken(data.token);
       });
   }
@@ -26,18 +28,8 @@ export default class PostService {
     })
       .then((response) => response.json())
       .then((data) => {
-        notify(data.message);
+        Notify(data.message);
         setToken(data.token);
       });
-  }
-
-  static async getUserInfo(token) {
-    return await fetch("http://localhost:5000/auth/getUserInfo", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      method: "GET",
-    });
   }
 }

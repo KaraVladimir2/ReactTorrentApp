@@ -11,6 +11,7 @@ import Pagination from "../Components/Pagination";
 import Navbar from "../Components/Navbar";
 import Header from "../Components/Header";
 import { TokenContext } from "../Context";
+import { useHistory } from "react-router-dom";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
@@ -22,6 +23,7 @@ function Posts() {
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
   const lastElement = useRef();
   const { isAdmin } = useContext(TokenContext);
+  const router = useHistory();
 
   const getPageCount = (totalCount, limit) => {
     return Math.ceil(totalCount / limit);
@@ -41,6 +43,7 @@ function Posts() {
   const createPost = async (newPost) => {
     setModal(false);
     PostService.sendPost(newPost);
+    router.push(0);
   };
 
   const removePost = (post) => {

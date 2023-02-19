@@ -102,6 +102,18 @@ const PostIdPage = () => {
                       );
                     })}
                   </div>
+                  {post.features && (
+                    <div>
+                      <p className="margin-top">
+                        <b>Особености игры:</b>
+                      </p>
+                      <div>
+                        {post.features.split(";").map((feature, index) => {
+                          return <p key={index}>{feature}</p>;
+                        })}
+                      </div>
+                    </div>
+                  )}
                   <p className="margin-top">
                     <b>Системные требования:</b>
                   </p>
