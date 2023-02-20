@@ -58,7 +58,7 @@ const PostItem = (props) => {
                 className="post-detail"
                 onClick={() => router.push(`/posts/${props.post.id}`)}
               >
-                Комментарии ({props.post.comments.lenght || 0})
+                Комментарии ({props.post.comments.length})
               </a>
             </div>
           </div>
