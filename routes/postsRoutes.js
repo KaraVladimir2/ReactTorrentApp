@@ -99,12 +99,13 @@ postsRouter.post("/getPosts", cors(), async (req, res) => {
 postsRouter.post("/getPostById", cors(), async (req, res) => {
   const { id } = req.body;
   try {
-    postModel.updateOne({ _id: id }, { $inc: { views: 1 } }, (err, data) => {});
-    await postModel
-      .findOne({ _id: id }, (err, data) => {
-        res.json({ success: true, data: data });
-      })
-      .clone();
+    postModel.updateOne({ _id: id }, { $inc: { views: 1 } }, (err, data) => {
+      postModel
+        .findOne({ _id: id }, (err, data) => {
+          res.json({ success: true, data: data });
+        })
+        .clone();
+    });
   } catch (error) {
     res.json({ success: false, message: "Something went wrong" });
   }
