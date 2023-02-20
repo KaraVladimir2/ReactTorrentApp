@@ -8,7 +8,13 @@ const MyModal = ({ children, visible, setVisible }) => {
   }
 
   return (
-    <div className={rootClasses.join(" ")} onClick={() => setVisible(false)}>
+    <div
+      className={rootClasses.join(" ")}
+      onClick={() => {
+        setVisible(false);
+        document.body.style.overflow = "auto";
+      }}
+    >
       <div className="myModalContent" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>

@@ -8,6 +8,7 @@ import Header from "../Components/Header";
 import Comment from "../Components/Comment";
 import { TokenContext } from "../Context";
 import createFileUrl from "../utils/createFileUrl";
+import MyModal from "../Components/MyModal";
 
 const PostIdPage = () => {
   const params = useParams();
@@ -17,8 +18,9 @@ const PostIdPage = () => {
   const [screenshotsURL, setScreenshotsURL] = useState([]);
   const [torrentFileURL, setTorrentFileURL] = useState("");
   const [userComment, setUserComment] = useState("");
+  const [modal, setModal] = useState(false);
+  const [modalScreenshot, setModalScreenshot] = useState("");
   const router = useHistory();
-
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
     setPost(await PostService.getById(id));
   });
@@ -49,6 +51,9 @@ const PostIdPage = () => {
 
   return (
     <div>
+      <MyModal visible={modal} setVisible={setModal}>
+        <img className="modal-screenshot" src={modalScreenshot} alt="" />
+      </MyModal>
       <div className="App">
         <Header />
         <div className="container">
@@ -94,6 +99,11 @@ const PostIdPage = () => {
                     {screenshotsURL.map((screenshot) => {
                       return (
                         <img
+                          onClick={(e) => {
+                            setModal(true);
+                            setModalScreenshot(e.target.src);
+                            document.body.style.overflow = "hidden";
+                          }}
                           key={screenshot}
                           className="screenshot"
                           src={screenshot}
