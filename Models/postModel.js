@@ -11,6 +11,7 @@ const schema = new Schema({
   views: {
     type: Number,
     required: false,
+    default: 0,
   },
   genre: {
     type: String,

@@ -75,7 +75,7 @@ const PostIdPage = () => {
                     </div>
                     <div className="post-title-down">
                       <p className="postfooter">
-                        {post.postDate} | Просмотров: 468
+                        {post.postDate} | Просмотров: {post.views}
                       </p>
                       {isAdmin && (
                         <button
