@@ -13,7 +13,7 @@ const createFileUrl = async (data, setState) => {
   }
   const objectURL = [];
   buffers.map((buffer) => {
-    const blob = new Blob([buffer]);
+    const blob = new Blob([buffer], { type: data.ContentType });
     return objectURL.push(URL.createObjectURL(blob));
   });
   if (objectURL.length === 1) setState(objectURL[0]);
