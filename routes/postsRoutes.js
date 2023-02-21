@@ -86,8 +86,9 @@ postsRouter.post("/getPosts", cors(), async (req, res) => {
   try {
     await postModel
       .find()
+      .sort({ _id: -1 })
       .skip((page - 1) * limit)
-      .limit(10)
+      .limit(limit)
       .exec(function (err, data) {
         res.json({ success: true, data: data });
       });
@@ -108,6 +109,16 @@ postsRouter.post("/getPostById", cors(), async (req, res) => {
     });
   } catch (error) {
     res.json({ success: false, message: "Something went wrong" });
+  }
+});
+
+postsRouter.get("/getTotalPages", cors(), async (req, res) => {
+  try {
+    postModel.countDocuments({}, (err, data) => {
+      return res.json({ success: true, data: data });
+    });
+  } catch (error) {
+    return res.json({ success: false, message: "Something went wrong" });
   }
 });
 

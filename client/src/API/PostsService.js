@@ -16,7 +16,7 @@ export default class PostService {
     })
       .then((response) => response.json())
       .then((data) => {
-        return data.data.reverse();
+        return data.data;
       });
   }
 
@@ -24,6 +24,17 @@ export default class PostService {
     return await fetch("http://localhost:5000/posts/getPostById", {
       ...options,
       body: JSON.stringify({ id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data.data;
+      });
+  }
+
+  static async getTotalPages() {
+    return await fetch("http://localhost:5000/posts/getTotalPages", {
+      ...options,
+      method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {

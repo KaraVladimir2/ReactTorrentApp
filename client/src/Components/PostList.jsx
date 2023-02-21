@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PostItem from "./PostItem";
 import Loader from "./UI/Loader";
 
