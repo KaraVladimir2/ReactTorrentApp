@@ -8,7 +8,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 postsRouter.post(
   "/postSend",
-  [upload.array("myImage"), cors()],
+  [upload.array("files"), cors()],
   async (req, res) => {
     const {
       title,
@@ -21,17 +21,17 @@ postsRouter.post(
       size,
     } = JSON.parse(req.body.data);
 
-    const encode_img = [];
-    const final_img = [];
-    req.files.forEach((element, index) => {
-      encode_img[index] = element.buffer.toString("base64");
+    const encodeFiles = [];
+    const finalFiles = [];
+    req.files.forEach((element) => {
+      encodeFiles.push(element.buffer.toString("base64"));
     });
 
-    encode_img.forEach((element, index) => {
-      final_img[index] = {
+    encodeFiles.forEach((element, index) => {
+      finalFiles.push({
         Buffer: Buffer.from(element, "base64"),
         ContentType: req.files[index].mimetype,
-      };
+      });
     });
 
     const postToAdd = new postModel({
@@ -43,9 +43,9 @@ postsRouter.post(
       shortInfo,
       installation,
       size,
-      titleImage: final_img[0],
-      screenshots: [final_img[1], final_img[2], final_img[3], final_img[4]],
-      torrentFile: final_img[5],
+      titleImage: finalFiles[0],
+      screenshots: [finalFiles[1], finalFiles[2], finalFiles[3], finalFiles[4]],
+      torrentFile: finalFiles[5],
     });
     try {
       await postToAdd.save();
@@ -76,7 +76,6 @@ postsRouter.post("/postComment", cors(), async (req, res) => {
     await post.updateOne({}, { $push: { comments: comment } });
     res.json({ success: true, message: "Comment has been sent" });
   } catch (error) {
-    console.log(error.message);
     res.json({ success: false, message: "Something went wrong" });
   }
 });
@@ -101,11 +100,10 @@ postsRouter.post("/getPostById", cors(), async (req, res) => {
   const { id } = req.body;
   try {
     postModel.updateOne({ _id: id }, { $inc: { views: 1 } }, (err, data) => {
-      postModel
-        .findOne({ _id: id }, (err, data) => {
-          res.json({ success: true, data: data });
-        })
-        .clone();
+      console.log(data);
+      postModel.findOne({ _id: id }, (err, data) => {
+        res.json({ success: true, data: data });
+      });
     });
   } catch (error) {
     res.json({ success: false, message: "Something went wrong" });

@@ -9,7 +9,7 @@ const options = {
 };
 
 export default class PostService {
-  static async getAll(page, limit) {
+  static async getPosts(page, limit) {
     return await fetch("http://localhost:5000/posts/getPosts", {
       ...options,
       body: JSON.stringify({ page, limit }),
@@ -20,7 +20,7 @@ export default class PostService {
       });
   }
 
-  static async getById(id) {
+  static async getPostById(id) {
     return await fetch("http://localhost:5000/posts/getPostById", {
       ...options,
       body: JSON.stringify({ id }),
@@ -45,11 +45,11 @@ export default class PostService {
   static async sendPost(newPost) {
     const formData = new FormData();
     formData.append("data", JSON.stringify(newPost));
-    formData.append("myImage", newPost.titleImage);
+    formData.append("files", newPost.titleImage);
     [...newPost.screenshots].forEach((element) => {
-      formData.append("myImage", element);
+      formData.append("files", element);
     });
-    formData.append("myImage", newPost.torrentFile);
+    formData.append("files", newPost.torrentFile);
 
     await fetch("http://localhost:5000/posts/postSend", {
       method: "POST",

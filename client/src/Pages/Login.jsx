@@ -10,7 +10,7 @@ import { TokenContext } from "../Context";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { token, setToken, setIsAuth } = useContext(TokenContext);
+  const { setToken, setIsAuth } = useContext(TokenContext);
   const router = useHistory();
 
   const updateToken = async (result) => {

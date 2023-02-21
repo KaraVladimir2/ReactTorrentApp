@@ -22,7 +22,7 @@ const PostIdPage = () => {
   const [modalScreenshot, setModalScreenshot] = useState("");
   const router = useHistory();
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
-    setPost(await PostService.getById(id));
+    setPost(await PostService.getPostById(id));
   });
 
   const downloadFile = () => {
@@ -149,7 +149,6 @@ const PostIdPage = () => {
                 </div>
                 <Comment
                   username={username}
-                  id={post._id}
                   post={post}
                   setPost={setPost}
                   userComment={userComment}

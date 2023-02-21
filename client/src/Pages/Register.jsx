@@ -14,7 +14,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const [isVerified, setIsVerified] = useState(false);
-  const { token, setToken } = useContext(TokenContext);
+  const { setToken } = useContext(TokenContext);
   const router = useHistory();
 
   const updateToken = async (result) => {
@@ -34,11 +34,8 @@ const Register = () => {
   };
 
   function handleCaptchaChange(value) {
-    if (value) {
-      setIsVerified(true);
-    } else {
-      setIsVerified(false);
-    }
+    if (value) setIsVerified(true);
+    else setIsVerified(false);
   }
 
   return (

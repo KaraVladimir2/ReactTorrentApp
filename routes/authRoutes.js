@@ -34,7 +34,7 @@ authRouter.post(
         return res.status(400).json({
           isSuccessful: false,
           message: "Ошибка при регистрации",
-          errors,
+          errors: errors,
         });
       }
       const { username, password } = req.body;
@@ -65,7 +65,6 @@ authRouter.post(
         isSuccessful: true,
       });
     } catch (e) {
-      console.log(e);
       res
         .status(400)
         .json({ isSuccessful: false, message: "Registration error" });
@@ -96,7 +95,6 @@ authRouter.post("/login", cors(), async (req, res) => {
       isSuccessful: true,
     });
   } catch (e) {
-    console.log(e);
     res.status(400).json({ isSuccessful: false, message: "Login error" });
   }
 });

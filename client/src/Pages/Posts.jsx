@@ -18,7 +18,7 @@ function Posts() {
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
-  const [limit, setLimit] = useState(2);
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
   const lastElement = useRef();
@@ -31,7 +31,7 @@ function Posts() {
 
   const [fetchPosts, isPostsLoading, postError] = useFetching(
     async (limit, page) => {
-      const getAll = await PostService.getAll(page, limit);
+      const getAll = await PostService.getPosts(page, limit);
       const totalPostsCount = await PostService.getTotalPages();
       setPosts([...getAll]);
       setTotalPages(getPageCount(totalPostsCount, limit));
@@ -44,8 +44,8 @@ function Posts() {
 
   const createPost = async (newPost) => {
     setModal(false);
-    PostService.sendPost(newPost);
-    router.push(0);
+    await PostService.sendPost(newPost);
+    router.go(0);
   };
 
   const removePost = (post) => {

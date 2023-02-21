@@ -5,19 +5,12 @@ import PostService from "../API/PostsService";
 import { TokenContext } from "../Context";
 import CommentsList from "./CommentsList";
 
-const Comment = ({
-  username,
-  id,
-  post,
-  setPost,
-  userComment,
-  setUserComment,
-}) => {
+const Comment = ({ username, post, setPost, userComment, setUserComment }) => {
   const { isAuth } = useContext(TokenContext);
   let reverseComments = post.comments.reverse();
 
   const postComment = async () => {
-    await PostService.postComment(userComment, username, id);
+    await PostService.postComment(userComment, username, post._id);
     setUserComment("");
     const updatedPost = await PostService.getById(post._id);
     setPost({
