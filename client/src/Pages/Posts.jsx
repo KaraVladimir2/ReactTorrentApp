@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PostService from "../API/PostsService";
 import { usePosts } from "../Hooks/usePosts";
 import { useFetching } from "../Hooks/useFetching";
@@ -21,7 +21,6 @@ function Posts() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-  const lastElement = useRef();
   const { isAdmin } = useContext(TokenContext);
   const router = useHistory();
 
