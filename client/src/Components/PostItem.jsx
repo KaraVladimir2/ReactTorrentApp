@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useFetching } from "../Hooks/useFetching";
 import Loader from "./UI/Loader";
 import createFileUrl from "../utils/createFileUrl";
+import { TokenContext } from "../Context";
 
 const PostItem = (props) => {
   const router = useHistory();
+  const { isAdmin } = useContext(TokenContext);
   const [titleImageURL, setTitleImageURL] = useState("");
   const [fetchPostById, isLoading, error] = useFetching(async (id) => {
     createFileUrl(props.post.titleImage, setTitleImageURL);
@@ -45,7 +47,7 @@ const PostItem = (props) => {
               </div>
             </div>
             <img className="post-image" src={titleImageURL} alt="img" />
-            <p className="post-build">{props.post._id}</p>
+            {isAdmin && <p className="post-build">{props.post._id}</p>}
             <p>{props.post.description}</p>
             <div className="post-detail-buttons">
               <a

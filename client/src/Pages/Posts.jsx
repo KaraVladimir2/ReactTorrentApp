@@ -32,9 +32,8 @@ function Posts() {
   const [fetchPosts, isPostsLoading, postError] = useFetching(
     async (limit, page) => {
       const getAll = await PostService.getPosts(page, limit);
-      const totalPostsCount = await PostService.getTotalPages();
-      setPosts([...getAll]);
-      setTotalPages(getPageCount(totalPostsCount, limit));
+      setPosts([...getAll.data]);
+      setTotalPages(getPageCount(getAll.totalPostCount, limit));
     }
   );
 

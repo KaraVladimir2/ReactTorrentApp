@@ -31,17 +31,6 @@ export default class PostService {
       });
   }
 
-  static async getTotalPages() {
-    return await fetch("http://localhost:5000/posts/getTotalPages", {
-      ...options,
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        return data.data;
-      });
-  }
-
   static async sendPost(newPost) {
     const formData = new FormData();
     formData.append("data", JSON.stringify(newPost));
