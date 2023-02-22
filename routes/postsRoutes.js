@@ -81,7 +81,6 @@ postsRouter.post("/postComment", cors(), async (req, res) => {
 });
 
 postsRouter.post("/getPosts", cors(), async (req, res) => {
-  const start = new Date().getTime();
   const { page, limit } = req.body;
   let totalPostCount = 0;
   try {
@@ -100,9 +99,6 @@ postsRouter.post("/getPosts", cors(), async (req, res) => {
         const newArrray = data.map((obj) => {
           return { _id: obj._id.toString(), ...obj._doc };
         });
-        const end = new Date().getTime();
-        const elapsed = end - start;
-        console.log(`Elapsed time: ${elapsed} ms`);
         res.json({ success: true, data: { data: newArrray, totalPostCount } });
       });
   } catch (error) {
