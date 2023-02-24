@@ -25,6 +25,7 @@ function Posts() {
   const router = useHistory();
 
   const getPageCount = (totalCount, limit) => {
+    console.log(totalCount);
     return Math.ceil(totalCount / limit);
   };
 

@@ -105,11 +105,14 @@ postsRouter.post("/getPosts", cors(), async (req, res) => {
       .exec(function (err, data) {
         postModel.countDocuments({}, (err, total) => {
           totalPostCount = total;
+          const newArrray = data.map((obj) => {
+            return { _id: obj._id.toString(), ...obj._doc };
+          });
+          res.json({
+            success: true,
+            data: { data: newArrray, totalPostCount },
+          });
         });
-        const newArrray = data.map((obj) => {
-          return { _id: obj._id.toString(), ...obj._doc };
-        });
-        res.json({ success: true, data: { data: newArrray, totalPostCount } });
       });
   } catch (error) {
     res.json({ success: false, message: "Something went wrong" });
