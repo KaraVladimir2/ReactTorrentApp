@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import PostService from "../API/PostsService";
-import { usePosts } from "../Hooks/usePosts";
 import { useFetching } from "../Hooks/useFetching";
 import MyButton from "../Components/UI/MyButton";
 import PostForm from "../Components/PostForm";
@@ -15,23 +14,22 @@ import { useHistory } from "react-router-dom";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
-  const [filter, setFilter] = useState({ sort: "", query: "" });
+  const [search, setSearch] = useState("");
   const [modal, setModal] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
-  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
   const { isAdmin } = useContext(TokenContext);
   const router = useHistory();
 
   const getPageCount = (totalCount, limit) => {
-    console.log(totalCount);
     return Math.ceil(totalCount / limit);
   };
 
   const [fetchPosts, isPostsLoading, postError] = useFetching(
     async (limit, page) => {
-      const getAll = await PostService.getPosts(page, limit);
+      search === "" ? setLimit(10) : setLimit(10000000);
+      const getAll = await PostService.getPosts(page, limit, search);
       setPosts([...getAll.data]);
       setTotalPages(getPageCount(getAll.totalPostCount, limit));
     }
@@ -39,7 +37,7 @@ function Posts() {
 
   useEffect(() => {
     fetchPosts(limit, page);
-  }, [page, limit]);
+  }, [page, limit, search]);
 
   const createPost = async (newPost) => {
     setModal(false);
@@ -53,6 +51,7 @@ function Posts() {
 
   const changePage = (page) => {
     setPosts([]);
+    setSearch("");
     window.scrollTo(0, 0);
     setPage(page);
   };
@@ -78,9 +77,9 @@ function Posts() {
             </>
           ) : null}
 
-          <PostFilter filter={filter} setFilter={setFilter} />
+          <PostFilter search={search} setSearch={setSearch} />
           {postError && <h1>Произошла ошибка ${postError}</h1>}
-          <PostList remove={removePost} posts={sortedAndSearchedPosts} />
+          <PostList remove={removePost} posts={posts} />
           <Pagination
             postsLen={posts.length}
             page={page}
