@@ -71,11 +71,21 @@ postsRouter.post("/deletePost", cors(), async (req, res) => {
 postsRouter.post("/postComment", cors(), async (req, res) => {
   try {
     const { text, username, id } = req.body;
-    const post = postModel.findOne({ _id: id });
     const comment = { text, owner: username };
-    await post.updateOne({}, { $push: { comments: comment } });
+    await postModel.updateOne({ _id: id }, { $push: { comments: comment } });
     res.json({ success: true, message: "Comment has been sent" });
   } catch (error) {
+    res.json({ success: false, message: "Something went wrong" });
+  }
+});
+
+postsRouter.post("/deleteComment", cors(), async (req, res) => {
+  try {
+    const { comment, id } = req.body;
+    await postModel.updateOne({ _id: id }, { $pull: { comments: comment } });
+    res.json({ success: true, message: "Comment has been deleted" });
+  } catch (error) {
+    console.log(error.message);
     res.json({ success: false, message: "Something went wrong" });
   }
 });
@@ -110,8 +120,8 @@ postsRouter.post("/getPostById", cors(), async (req, res) => {
   const { id } = req.body;
   try {
     postModel.updateOne({ _id: id }, { $inc: { views: 1 } }, (err, data) => {
-      console.log(data);
       postModel.findOne({ _id: id }, (err, data) => {
+        data.comments.sort((a, b) => b.date - a.date);
         res.json({ success: true, data: data });
       });
     });

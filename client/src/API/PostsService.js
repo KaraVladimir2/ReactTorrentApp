@@ -71,4 +71,15 @@ export default class PostService {
         Notify(data.message);
       });
   }
+
+  static async deleteComment(comment, id) {
+    await fetch("http://localhost:5000/posts/deleteComment", {
+      ...options,
+      body: JSON.stringify({ comment, id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        Notify(data.message);
+      });
+  }
 }

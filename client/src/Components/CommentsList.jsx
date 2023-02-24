@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { TokenContext } from "../Context";
+import MyButton from "./UI/MyButton";
 
-const CommentsList = ({ comments }) => {
+const CommentsList = ({ comments, deleteComment }) => {
+  const { isAdmin } = useContext(TokenContext);
+
   return (
     <div>
       {comments.map((comment) => {
@@ -9,7 +13,12 @@ const CommentsList = ({ comments }) => {
             <tbody>
               <tr>
                 <th colSpan="2">
-                  Написал: {comment.owner}, Дата: {comment.date}
+                  Написал: {comment.owner} | Дата: {comment.date}{" "}
+                  {isAdmin && (
+                    <MyButton onClick={() => deleteComment(comment)}>
+                      Удалить
+                    </MyButton>
+                  )}
                 </th>
               </tr>
               <tr>
