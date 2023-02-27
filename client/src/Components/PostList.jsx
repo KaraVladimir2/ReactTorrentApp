@@ -2,7 +2,7 @@ import React from "react";
 import PostItem from "./PostItem";
 import Loader from "./UI/Loader";
 
-const PostList = ({ posts, remove }) => {
+const PostList = ({ posts }) => {
   if (!posts.length) {
     return <Loader />;
   }
@@ -10,12 +10,7 @@ const PostList = ({ posts, remove }) => {
   return (
     <div>
       {posts.map((post, index) => (
-        <PostItem
-          key={post._id}
-          remove={remove}
-          number={index + 1}
-          post={post}
-        />
+        <PostItem key={post._id} number={index + 1} post={post} />
       ))}
     </div>
   );

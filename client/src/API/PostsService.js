@@ -9,10 +9,10 @@ const options = {
 };
 
 export default class PostService {
-  static async getPosts(page, limit, query) {
+  static async getPosts(page, limit, query, genre) {
     return await fetch("http://localhost:5000/posts/getPosts", {
       ...options,
-      body: JSON.stringify({ page, limit, query }),
+      body: JSON.stringify({ page, limit, query, genre }),
     })
       .then((response) => response.json())
       .then((data) => {

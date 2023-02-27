@@ -114,6 +114,13 @@
   align-items: center;
 }
 
+.admin-panel {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  margin: 20px 0;
+}
+
 .post-content {
   display: flex;
   flex-direction: column;

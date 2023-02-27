@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
 import postsRoutes from "./routes/postsRoutes.js";
 import usersRoutes from "./routes/usersRoutes.js";
+import genreRoutes from "./routes/genreRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
@@ -19,10 +20,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/auth", authRoutes);
 app.use("/posts", postsRoutes);
 app.use("/users", usersRoutes);
+app.use("/genre", genreRoutes);
 app.use(express.static(__dirname));
 postsRoutes.use(cors());
 usersRoutes.use(cors());
 authRoutes.use(cors());
+genreRoutes.use(cors());
 
 mongoose.set("strictQuery", false);
 

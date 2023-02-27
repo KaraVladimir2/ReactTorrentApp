@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
 import About from "./About";
 import Advices from "./Advices";
 import Contacts from "./Contacts";
+import Genre from "./Genre";
 import MyModal from "./MyModal";
 
-const Navbar = () => {
+const Navbar = ({ setGenre }) => {
   const [modalAdvices, setModalAdvices] = useState(false);
   const [modalAbout, setModalAbout] = useState(false);
   const [modalContacts, setModalContacts] = useState(false);
-  const router = useHistory();
+  const [modalGenre, setModalGenre] = useState(false);
 
   return (
     <div style={{ width: "100%" }}>
@@ -21,6 +21,9 @@ const Navbar = () => {
       </MyModal>
       <MyModal visible={modalContacts} setVisible={setModalContacts}>
         <Contacts />
+      </MyModal>
+      <MyModal visible={modalGenre} setVisible={setModalGenre}>
+        <Genre setQueryGenre={setGenre} setVisible={setModalGenre} />
       </MyModal>
       <ul className="naviga">
         <a href="/posts">
@@ -45,6 +48,12 @@ const Navbar = () => {
           <li>
             <h2>Контакты</h2>
             <p>Как с нами связаться?</p>
+          </li>
+        </div>
+        <div onClick={() => setModalGenre(true)}>
+          <li>
+            <h2>Жанры</h2>
+            <p>Поиск игр по жанру</p>
           </li>
         </div>
       </ul>

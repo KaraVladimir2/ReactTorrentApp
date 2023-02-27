@@ -91,12 +91,15 @@ postsRouter.post("/deleteComment", cors(), async (req, res) => {
 });
 
 postsRouter.post("/getPosts", cors(), async (req, res) => {
-  const { page, limit, query } = req.body;
+  const { page, limit, query, genre } = req.body;
   let totalPostCount = 0;
   try {
     await postModel
       .find(
-        { title: { $regex: query, $options: "i" } },
+        {
+          title: { $regex: query, $options: "i" },
+          genre: { $regex: genre, $options: "i" },
+        },
         "_id title genre description features requirements shortInfo installation size titleImage postDate views"
       )
       .sort({ _id: -1 })
