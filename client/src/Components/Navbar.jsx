@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import About from "./About";
 import Advices from "./Advices";
 import Contacts from "./Contacts";
@@ -9,9 +9,10 @@ const Navbar = () => {
   const [modalAdvices, setModalAdvices] = useState(false);
   const [modalAbout, setModalAbout] = useState(false);
   const [modalContacts, setModalContacts] = useState(false);
+  const router = useHistory();
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <MyModal visible={modalAdvices} setVisible={setModalAdvices}>
         <Advices />
       </MyModal>
@@ -22,12 +23,12 @@ const Navbar = () => {
         <Contacts />
       </MyModal>
       <ul className="naviga">
-        <Link to="/posts">
+        <a href="/posts">
           <li>
             <h2>Главная</h2>
             <p>Самые интересные новости</p>
           </li>
-        </Link>
+        </a>
         <div onClick={() => setModalAdvices(true)}>
           <li>
             <h2>Советы</h2>
