@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     async function temp() {
       localStorage.setItem("token", token);
-      await UsersService.getUserInfo(token).then((response) =>
+      await UsersService.getInfoFromToken(token).then((response) =>
         response.json().then((data) => {
           if (data.message) {
             setToken("");

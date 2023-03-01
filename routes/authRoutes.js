@@ -99,4 +99,18 @@ authRouter.post("/login", cors(), async (req, res) => {
   }
 });
 
+authRouter.post("/checkPassword", cors(), async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await userModel.findOne({ username });
+    const validPassword = bcrypt.compareSync(password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({ isSuccessful: false });
+    }
+    return res.json({ isSuccessful: true });
+  } catch (e) {
+    res.status(400).json({ isSuccessful: false, message: "Login error" });
+  }
+});
+
 export default authRouter;

@@ -466,3 +466,93 @@
   width: 100%;
   height: 90vh;
 }
+
+.user-menu {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: white;
+  border: black 1px solid;
+  outline: none;
+  transition: 1s;
+  box-shadow: 0 2px 10px 2px rgb(0 0 0 / 20%);
+}
+
+.user-menu:hover,
+.user-menu:focus {
+  background-color: black;
+  color: white;
+}
+
+.user-menu img {
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  border-radius: 10%;
+  padding: 5px;
+  width: 100%;
+}
+
+.user-menu-dropdown button {
+  width: 100%;
+  background-color: black;
+  padding: 8px;
+  margin: 5px;
+  color: white;
+  text-decoration: none;
+  transition: 0.5s;
+  cursor: pointer;
+  border: white 1px solid;
+}
+
+.user-menu-dropdown a {
+  width: 100%;
+  margin: 5px;
+}
+
+.user-menu-dropdown a button {
+  margin: 0;
+}
+
+.user-menu-dropdown button:hover {
+  color: black;
+  background-color: white;
+}
+
+#user-menu ~ #user-menu-dropdown {
+  transform: scaleX(0) scaleY(0);
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  transition-duration: 75ms;
+  opacity: 0;
+  top: 3.25rem;
+}
+
+#user-menu ~ #user-menu-dropdown:focus-within,
+#user-menu:focus ~ #user-menu-dropdown {
+  transform: scaleX(1) scaleY(1);
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-duration: 100ms;
+  opacity: 1;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 90%;
+}
+
+.profile-form h2 {
+  margin-top: 20px;
+}

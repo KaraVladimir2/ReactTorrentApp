@@ -36,4 +36,15 @@ export default class PostService {
         setToken(data.token);
       });
   }
+
+  static async checkPassword(username, password) {
+    return await fetch("http://localhost:5000/auth/checkPassword", {
+      ...options,
+      body: JSON.stringify({ username, password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data;
+      });
+  }
 }

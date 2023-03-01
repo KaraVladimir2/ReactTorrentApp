@@ -14,6 +14,7 @@ const AppRouter = () => {
           (route.path === "/login" || route.path === "/register")
         )
           return;
+        while (!isAuth && route.path === "/profile") return;
         return (
           <Route
             component={route.component}
@@ -33,6 +34,7 @@ const AppRouter = () => {
           (route.path === "/login" || route.path === "/register")
         )
           return;
+        while (!isAuth && route.path === "/profile") return;
         return (
           <Route
             component={route.component}
